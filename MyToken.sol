@@ -128,3 +128,84 @@ contract Updater{
         return ledgerbalance.balances(address(this));
     }
 }
+// task 6
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract myconst{
+        address public owner;
+        string public greeting;
+        
+            constructor( string memory _greeting){
+                owner = msg.sender;
+                greeting = _greeting;
+            }
+            function setgreeting(string memory _newgreeting) public {
+                greeting = _newgreeting;
+            }
+            function getgreeting() public view returns( string memory) {
+                    return greeting;
+                }
+            }
+
+
+// task 7
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract Myenum{
+    enum state {
+        pending, Active, Inactive, Completed
+    }
+    state public currentstate;
+    event statechanged (state _newstate);
+    constructor(){
+        currentstate = state.pending;
+    }   
+    function activate () public {
+        require (currentstate == state.pending, "only acvtivate from pending");
+        currentstate = state.Active;
+        emit statechanged (currentstate);
+    }
+
+    function deactivate () public {
+        require (currentstate == state.Active, "only acvtivate from Active");
+        currentstate = state.Inactive;
+        emit statechanged (currentstate);
+    }
+     function complete () public {
+        require (currentstate == state.Inactive, "only acvtivate from Inactive");
+        currentstate = state.Completed;
+        emit statechanged (currentstate);
+    }
+    function reset () public {
+        require (currentstate == state.Completed, "only acvtivate from Compkted");
+        currentstate = state.pending;
+        emit statechanged (currentstate);
+    }
+    function getstate() public view returns (string memory){
+        if(currentstate == state.pending) return "pending";
+        if( currentstate == state.Active) return "Active";
+        if(currentstate == state.Inactive) return "Inactive";
+        if( currentstate == state.Completed) return "Completed";
+        return "unknown";
+    }
+
+}
+
+// task 8
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract myevent{
+    uint256 public value;
+    event Valuechanged (uint256 indexed oldvalue, uint256 indexed newvalue);
+    function setvalue (uint256 _newvalue) public returns(uint256) {
+        uint256 oldvalue = value;
+        emit Valuechanged (oldvalue, _newvalue);
+        return value;
+    }
+}
