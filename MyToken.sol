@@ -209,3 +209,31 @@ contract myevent{
         return value;
     }
 }
+
+task 9
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract sending1{
+    address public owner;
+    constructor(){
+        owner = msg.sender;
+    }
+    modifier onlyowner(){
+        require(msg.sender==owner,"Not Authorized");
+        _;
+    }
+
+    function getbalance() public view returns(uint256){
+        return address(this).balance;
+
+    }
+    function checkbal(address account) public view returns(uint256){
+        return account.balance;
+    }
+    function withdraw(uint256 amount) public onlyowner{
+        require(address(this).balance >=amount,"insufficient bal");
+        payable (msg.sender).transfer(amount);
+    }
+    receive() external payable { }
+}
