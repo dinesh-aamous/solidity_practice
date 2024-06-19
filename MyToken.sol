@@ -237,3 +237,55 @@ contract sending1{
     }
     receive() external payable { }
 }
+
+// task 10
+
+const {Web3} = require('web3');
+const web3 = new Web3('http://localhost:7545');
+
+
+async function getaacounts(){
+    try{
+        const accounts = await web3.eth.getAccounts();
+        console.log('Accounts:', accounts);
+    }catch(error){
+        console.log(error);
+    }
+}
+
+async function sendtransaction(){
+    try{
+        const accounts = await web3.eth.getAccounts();
+        const sender = accounts[0];
+        if(sender === accounts[0]){
+            const receipt=await web3.eth.sendTransaction({
+                from:sender,
+                to:accounts[1],
+                value:web3.utils.toWei('10','ether') });
+                console.log('Transaction receipt:', receipt);
+        }
+        else{
+            console.log("sorry");
+        }
+    } catch(error){
+        console.error(error);
+    }
+}
+
+async function checkBalances() {
+    try {
+        const accounts = await web3.eth.getAccounts();
+        for (let i = 0; i < 10; i++) {
+            const balance = await web3.eth.getBalance(accounts[i]);
+            console.log(`Account ${i}: ${accounts[i]}`);
+            console.log(`Balance in Wei: ${balance}`);
+            console.log(`Balance in Ether: ${web3.utils.fromWei(balance, 'ether')} ETH`);
+            console.log('------------------------');
+        }
+    } catch (error) {
+        console.error('Error fetching balances:', error);
+    }
+}
+
+checkBalances();
+
